@@ -1,0 +1,2 @@
+gcc -o penguins init.c ./Game/PlayerAction.c ./Grid/BoardHandler.c
+./penguins.exe
