@@ -54,7 +54,7 @@ void askSetDimensions(struct Board *pBoard) {
 }
 
 void generateRandomBoard(struct Board *pBoard) {
-    char randValueString[2];
+    char randValueString[3];
     int randValueInt;
 
     struct Tile **tiles = malloc(pBoard->nrRows * sizeof(struct Tile *));

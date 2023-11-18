@@ -1,7 +1,8 @@
 #include "PlayerAction.h"
 
+#include <stdio.h>
+
 #include "../Grid/BoardHandler.h"
-#include "stdio.h"
 
 void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *tileChoosen;
