@@ -3,9 +3,12 @@
 #include "./Game/GameData.h"
 #include "./Grid/Board.h"
 #include "./Init/Init.h"
+#include "./Placement/Placement.h"
 
 int main() {
     struct GameData *pGameData = initPhase();
+
+    placementPhase(pGameData);
 
     struct Board *pBoard = pGameData->pBoard;
 

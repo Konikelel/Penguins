@@ -8,13 +8,19 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *tileChoosen;
     int *nrPlayerPenguins = &pPlayer->usedPenguins;
 
-    do {
-        printf("Choose penguin spawn:\n");
+    int loop = 1;
+    while (loop) {
+        printf("\nP%d Choose penguin spawn:\n", pPlayer->id);
 
         tileChoosen = askForCoordinates(pBoard);
-    } while (!isSpawnValid(tileChoosen));
 
-    tileChoosen->isOccupied = 1;
+        if (isSpawnValid(tileChoosen))
+            loop = 0;
+        else
+            printf("Invalid coordinates!\n");
+    }
+
+    tileChoosen->isOccupied = pPlayer->id;
 
     pPlayer->pPenguins[*nrPlayerPenguins] = tileChoosen;
     pPlayer->collectedFish = tileChoosen->nrFish;
@@ -42,19 +48,19 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     }
 
     pTileActive->isRemoved = 1;
-    pTileSet->isOccupied = 1;
+    pTileSet->isOccupied = pPlayer->id;
 }
 
 struct Tile *askForCoordinates(struct Board *pBoard) {
     int x, y;
 
     do {
-        printf("Enter X coordinate: ");
+        printf("- Enter X coordinate: ");
         scanf("%d", &x);
     } while (x < 0 || x > pBoard->nrColumns);
 
     do {
-        printf("Enter Y coordinate: ");
+        printf("- Enter Y coordinate: ");
         scanf("%d", &y);
     } while (x < 0 || x > pBoard->nrRows);
 

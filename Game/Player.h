@@ -4,6 +4,7 @@
 #include "../Grid/Tile.h"
 
 struct Player {
+    int id;
     struct Tile *pPenguins[3];
     int usedPenguins;
     int collectedFish;

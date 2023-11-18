@@ -6,4 +6,5 @@
 struct GameData {
     struct Board *pBoard;
     struct Player *pPlayers;
+    int nrPenguinsPerPlayer;
 };

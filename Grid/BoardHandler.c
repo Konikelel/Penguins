@@ -1,10 +1,6 @@
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
-#define YEL "\x1B[33m"
-#define BLU "\x1B[34m"
-#define MAG "\x1B[35m"
 #define CYN "\x1B[36m"
-#define WHT "\x1B[37m"
 #define RESET "\x1B[0m"
 
 #include "BoardHandler.h"
@@ -18,7 +14,7 @@ int genRandomValue() {
 }
 
 void showBoard(struct Board *pBoard) {
-    printf("   ");
+    printf("\n\n\n   ");
     for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
         printf(nrX < 10 ? "%s0%d%s " : "%s%d%s ", CYN, nrX, RESET);
     }
@@ -27,12 +23,30 @@ void showBoard(struct Board *pBoard) {
         printf(nrY < 10 ? "\n%s0%d%s" : "\n%s%d%s", CYN, nrY, RESET);
 
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
+            switch (pBoard->pSelf[nrY][nrX].isOccupied) {
+                case 1:
+                    printf(" %sP1%s", GRN, RESET);
+                    break;
+                case 2:
+                    printf(" %sP2%s", RED, RESET);
+                    break;
+            }
+
+            if (pBoard->pSelf[nrY][nrX].isRemoved) {
+                printf(" %sXX%s", CYN, RESET);
+                continue;
+            }
+
+            if (pBoard->pSelf[nrY][nrX].isOccupied)
+                continue;
+
             char *string = pBoard->pSelf[nrY][nrX].label;
             int nrChar = strlen(string);
 
             printf(nrChar < 2 ? " 0%s" : " %s", string);
         }
     }
+    printf("\n");
 }
 
 void askSetDimensions(struct Board *pBoard) {

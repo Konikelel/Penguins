@@ -1,3 +1,6 @@
+#define GRN "\x1B[32m"
+#define BLU "\x1B[34m"
+#define RESET "\x1B[0m"
 
 #include "Init.h"
 
@@ -27,8 +30,9 @@ struct GameData *initPhase() {
     pBoard->generate(pBoard);
     pBoard->show(pBoard);
 
-    for (int i = 0; i < 2; i++) {
-        pPlayers[i] = (struct Player){
+    for (int nr = 0; nr < 2; nr++) {
+        pPlayers[nr] = (struct Player){
+            .id = nr + 1,
             .collectedFish = 0,
             .usedPenguins = 0,
             .spawnPenguin = &spawnPenguin,
@@ -38,6 +42,7 @@ struct GameData *initPhase() {
 
     pGameData->pBoard = pBoard;
     pGameData->pPlayers = pPlayers;
+    pGameData->nrPenguinsPerPlayer = 2;
 
     return pGameData;
 }
