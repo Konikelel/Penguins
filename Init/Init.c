@@ -11,6 +11,7 @@
 #include "../Game/Player.h"
 #include "../Game/PlayerAction.h"
 #include "../Grid/Board.h"
+#include "../Grid/BoardChecks.h"
 #include "../Grid/BoardHandler.h"
 
 struct GameData *initPhase() {
@@ -18,16 +19,10 @@ struct GameData *initPhase() {
     struct Board *pBoard = (struct Board *)malloc(sizeof(struct Board));
     struct Player *pPlayers = (struct Player *)malloc(2 * sizeof(struct Player));
 
-    *pBoard = (struct Board){
-        .setDimensions = &askSetDimensions,
-        .generate = &generateRandomBoard,
-        .show = &showBoard,
-        .isSpawnValid = &isSpawnValid,
-        .isSetTileBlocked = &isSetTileBlocked,
-    };
+    *pBoard = (struct Board){.show = &showBoard};
 
-    pBoard->setDimensions(pBoard);
-    pBoard->generate(pBoard);
+    askSetDimensions(pBoard);
+    generateRandomBoard(pBoard);
     pBoard->show(pBoard);
 
     for (int nr = 0; nr < 2; nr++) {

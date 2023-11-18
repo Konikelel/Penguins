@@ -2,20 +2,19 @@
 
 #include <stdio.h>
 
-#include "../Grid/BoardHandler.h"
+#include "../Grid/BoardChecks.h"
 
 void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *tileChoosen;
     int *nrPlayerPenguins = &pPlayer->usedPenguins;
 
-    int loop = 1;
-    while (loop) {
+    while (1) {
         printf("\nP%d Choose penguin spawn:\n", pPlayer->id);
 
         tileChoosen = askForCoordinates(pBoard);
 
         if (isSpawnValid(tileChoosen))
-            loop = 0;
+            break;
         else
             printf("Invalid coordinates!\n");
     }
@@ -23,7 +22,7 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     tileChoosen->isOccupied = pPlayer->id;
 
     pPlayer->pPenguins[*nrPlayerPenguins] = tileChoosen;
-    pPlayer->collectedFish = tileChoosen->nrFish;
+    pPlayer->collectedFish += tileChoosen->nrFish;
 
     *nrPlayerPenguins++;
 }
@@ -32,11 +31,32 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *pTileActive;
     struct Tile *pTileSet;
 
-    do {
-        printf("Choose penguin:\n");
+    while (1) {
+        printf("\nChoose penguin:\n");
 
         pTileActive = askForCoordinates(pBoard);
-    } while (!isPlayerPenguin(pPlayer, pTileActive) && !isSetTileBlocked(pBoard, pTileActive));
+
+        if (isPlayerPenguin(pPlayer, pTileActive) &&
+            !isSetTileBlocked(pBoard, pTileActive))
+            break;
+
+        else
+            printf("Invalid coordinates!\n");
+    }
+
+    while (1) {
+        printf("\nChoose where to move penguin:\n");
+
+        pTileSet = askForCoordinates(pBoard);
+
+        if (!isSameTile(pTileActive, pTileSet) &&
+            isMoveInOneDimension(pBoard, pTileActive, pTileSet) &&
+            isRoadClear(pBoard, pTileActive, pTileSet))
+            break;
+
+        else
+            printf("Invalid coordinates!\n");
+    }
 
     pPlayer->collectedFish += pTileSet->nrFish;
 
@@ -49,6 +69,7 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
 
     pTileActive->isRemoved = 1;
     pTileSet->isOccupied = pPlayer->id;
+    pPlayer->collectedFish += pTileSet->nrFish;
 }
 
 struct Tile *askForCoordinates(struct Board *pBoard) {

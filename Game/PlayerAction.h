@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Grid/Board.h"
+#include "../Grid/Tile.h"
 #include "Player.h"
 
 struct Tile *askForCoordinates(struct Board *pBoard);

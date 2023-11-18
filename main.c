@@ -10,6 +10,8 @@ int main() {
 
     placementPhase(pGameData);
 
+    movementPhase(pGameData);
+
     struct Board *pBoard = pGameData->pBoard;
 
     for (int nrY = 0; nrY < pBoard->nrRows; nrY++) {

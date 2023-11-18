@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "BoardChecks.h"
+
 int genRandomValue() {
     return rand() % 4;
 }
@@ -93,35 +95,4 @@ void generateRandomBoard(struct Board *pBoard) {
     }
 
     pBoard->pSelf = tiles;
-}
-
-int isSpawnValid(struct Tile *pTile) {
-    return (pTile->nrFish == 1 && !pTile->isOccupied && !pTile->isRemoved);
-}
-
-int isSetTileBlocked(struct Board *pBoard, struct Tile *pTile) {
-    int x = pTile->x;
-    int y = pTile->y;
-    struct Tile *pTileTemp;
-
-    for (int nrX = x - 1; nrX < x + 1; nrX++) {
-        if (nrX < 0 || nrX > pBoard->nrColumns - 1)
-            continue;
-
-        for (int nrY = x - 1; nrY < x + 1; nrY++) {
-            if (nrY < 0 || nrY > pBoard->nrRows - 1)
-                continue;
-
-            pTileTemp = &pBoard->pSelf[nrY][nrX];
-
-            if (!pTileTemp->isBlocked && !pTileTemp->isRemoved) {
-                pTile->isBlocked = 0;
-
-                return 0;
-            }
-        }
-    }
-    pTile->isBlocked = 1;
-
-    return 1;
 }
