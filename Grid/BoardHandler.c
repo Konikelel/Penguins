@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Board.h"
 #include "BoardChecks.h"
 
 int genRandomValue() {

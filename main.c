@@ -3,6 +3,7 @@
 #include "./Game/GameData.h"
 #include "./Grid/Board.h"
 #include "./Init/Init.h"
+#include "./Movement/Movement.h"
 #include "./Placement/Placement.h"
 
 int main() {

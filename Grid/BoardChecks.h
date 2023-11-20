@@ -5,7 +5,7 @@
 
 int isSpawnValid(struct Tile *pTile);
 
-int isSameTile(struct Tile *pTile1, struct Tile *pTile2);
+int isTileFree(struct Tile *pTile);
 
 int isSetTileBlocked(struct Board *pBoard, struct Tile *pTile);
 

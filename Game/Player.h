@@ -5,7 +5,7 @@
 
 struct Player {
     int id;
-    struct Tile *pPenguins[3];
+    struct Tile *pPenguins[2];
     int usedPenguins;
     int collectedFish;
 

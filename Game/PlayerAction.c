@@ -2,11 +2,15 @@
 
 #include <stdio.h>
 
+#include "../Grid/Board.h"
 #include "../Grid/BoardChecks.h"
+#include "../Grid/Tile.h"
+#include "GameData.h"
+#include "Player.h"
 
 void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *tileChoosen;
-    int *nrPlayerPenguins = &pPlayer->usedPenguins;
+    int *nrPlayerPenguins = &(pPlayer->usedPenguins);
 
     while (1) {
         printf("\nP%d Choose penguin spawn:\n", pPlayer->id);
@@ -24,7 +28,7 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     pPlayer->pPenguins[*nrPlayerPenguins] = tileChoosen;
     pPlayer->collectedFish += tileChoosen->nrFish;
 
-    *nrPlayerPenguins++;
+    (*nrPlayerPenguins)++;
 }
 
 void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
@@ -32,30 +36,33 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *pTileSet;
 
     while (1) {
-        printf("\nChoose penguin:\n");
+        printf("\nP%d Choose penguin:\n", pPlayer->id);
 
         pTileActive = askForCoordinates(pBoard);
 
-        if (isPlayerPenguin(pPlayer, pTileActive) &&
-            !isSetTileBlocked(pBoard, pTileActive))
-            break;
-
-        else
+        if (!isPlayerPenguin(pPlayer, pTileActive)) {
             printf("Invalid coordinates!\n");
+
+        } else if (!isSetTileBlocked(pBoard, pTileActive)) {
+            printf("Tile is blocked!\n");
+
+        } else
+            break;
     }
 
     while (1) {
-        printf("\nChoose where to move penguin:\n");
+        printf("\nP%d Choose where to move penguin:\n", pPlayer->id);
 
         pTileSet = askForCoordinates(pBoard);
 
-        if (!isSameTile(pTileActive, pTileSet) &&
-            isMoveInOneDimension(pBoard, pTileActive, pTileSet) &&
-            isRoadClear(pBoard, pTileActive, pTileSet))
-            break;
+        if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet)) {
+            printf("Move is not in one dimension!\n");
 
-        else
-            printf("Invalid coordinates!\n");
+        } else if (!isRoadClear(pBoard, pTileActive, pTileSet)) {
+            printf("Road is not clear!\n");
+
+        } else
+            break;
     }
 
     pPlayer->collectedFish += pTileSet->nrFish;
@@ -67,7 +74,9 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
         }
     }
 
+    pTileActive->isOccupied = 0;
     pTileActive->isRemoved = 1;
+
     pTileSet->isOccupied = pPlayer->id;
     pPlayer->collectedFish += pTileSet->nrFish;
 }
@@ -89,8 +98,20 @@ struct Tile *askForCoordinates(struct Board *pBoard) {
 }
 
 int isPlayerPenguin(struct Player *pPlayer, struct Tile *pTile) {
-    for (int nr; nr < 4; nr++)
-        if (&pPlayer->pPenguins[nr] == &pTile)
+    for (int nr = 0; nr < pPlayer->usedPenguins; nr++)
+        if (pPlayer->pPenguins[nr] == pTile)
             return 1;
     return 0;
+}
+
+int canPlayerMoveAnyPenguin(struct GameData *pGameData, int playerId) {
+    struct Tile **pTiles = pGameData->pPlayers[playerId].pPenguins;
+    int nrStuckPenguins = 0;
+
+    for (int nr = 0; nr < pGameData->nrPenguinsPerPlayer; nr++) {
+        if (isSetTileBlocked(pGameData->pBoard, pTiles[nr]))
+            nrStuckPenguins++;
+    }
+
+    return !(nrStuckPenguins == pGameData->nrPenguinsPerPlayer);
 }
