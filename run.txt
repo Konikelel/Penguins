@@ -1,2 +1,0 @@
-gcc -o penguins main.c ./Init/Init.c ./Placement/Placement.c ./Game/PlayerAction.c ./Grid/BoardHandler.c
-./penguins.exe

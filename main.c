@@ -5,6 +5,7 @@
 #include "./Init/Init.h"
 #include "./Movement/Movement.h"
 #include "./Placement/Placement.h"
+#include "./Scoreboard/Scoreboard.h"
 
 int main() {
     struct GameData *pGameData = initPhase();
@@ -12,6 +13,8 @@ int main() {
     placementPhase(pGameData);
 
     movementPhase(pGameData);
+
+    scoreboard(pGameData);
 
     struct Board *pBoard = pGameData->pBoard;
 

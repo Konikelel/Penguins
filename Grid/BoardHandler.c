@@ -1,6 +1,9 @@
-#define RED "\x1B[31m"
-#define GRN "\x1B[32m"
+#define RED "\033[0;91m"
+#define GRN "\033[0;92m"
 #define CYN "\x1B[36m"
+#define RED_HIG "\x1B[31m"
+#define ON_RED "\033[0;101m"
+#define ON_GRN "\033[42m"
 #define RESET "\x1B[0m"
 
 #include "BoardHandler.h"
@@ -16,8 +19,14 @@ int genRandomValue() {
     return rand() % 4;
 }
 
+void printError(char *warning) {
+    printf("%s%s%s", RED_HIG, warning, RESET);
+}
+
 void showBoard(struct Board *pBoard) {
-    printf("\n\n\n   ");
+    system("@cls||clear");
+    printf("   ");
+
     for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
         printf(nrX < 10 ? " %s%d%s " : "%s%d%s ", CYN, nrX, RESET);
     }
@@ -28,15 +37,15 @@ void showBoard(struct Board *pBoard) {
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
             switch (pBoard->pSelf[nrY][nrX].isOccupied) {
                 case 1:
-                    printf(" %sP1%s", GRN, RESET);
+                    printf(" %sP1%s", pBoard->pSelf[nrY][nrX].isActive ? ON_GRN : GRN, RESET);
                     break;
                 case 2:
-                    printf(" %sP2%s", RED, RESET);
+                    printf(" %sP2%s", pBoard->pSelf[nrY][nrX].isActive ? ON_RED : RED, RESET);
                     break;
             }
 
             if (pBoard->pSelf[nrY][nrX].isRemoved) {
-                printf(" %sXX%s", CYN, RESET);
+                printf("   ");
                 continue;
             }
 
@@ -91,6 +100,7 @@ void generateRandomBoard(struct Board *pBoard) {
                 .isBlocked = 0,
                 .isOccupied = 0,
                 .isRemoved = 0,
+                .isActive = 0,
             };
         }
     }

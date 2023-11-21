@@ -8,4 +8,5 @@ struct Tile {
     int isBlocked;
     int isRemoved;
     int isOccupied;
+    int isActive;
 };

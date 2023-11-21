@@ -4,6 +4,7 @@
 
 #include "../Grid/Board.h"
 #include "../Grid/BoardChecks.h"
+#include "../Grid/BoardHandler.h"
 #include "../Grid/Tile.h"
 #include "GameData.h"
 #include "Player.h"
@@ -20,7 +21,8 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
         if (isSpawnValid(tileChoosen))
             break;
 
-        printf("Invalid coordinates!\n");
+        pBoard->show(pBoard);
+        printError("\nInvalid coordinates!");
     }
 
     tileChoosen->isOccupied = pPlayer->id;
@@ -40,29 +42,42 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
 
         pTileActive = askForCoordinates(pBoard);
 
-        if (!isPlayerPenguin(pPlayer, pTileActive))
-            printf("Invalid coordinates!\n");
+        if (!isPlayerPenguin(pPlayer, pTileActive)) {
+            pBoard->show(pBoard);
+            printError("\nInvalid coordinates!");
+        }
 
-        else if (isSetTileBlocked(pBoard, pTileActive))
-            printf("Tile is blocked!\n");
+        else if (isSetTileBlocked(pBoard, pTileActive)) {
+            pBoard->show(pBoard);
+            printError("\nPenguin is blocked!");
+        }
 
         else
             break;
     }
+
+    pTileActive->isActive = 1;
+    pBoard->show(pBoard);
 
     while (1) {
         printf("\nP%d Choose where to move penguin:\n", pPlayer->id);
 
         pTileSet = askForCoordinates(pBoard);
 
-        if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet))
-            printf("Move is not in one dimension!\n");
+        if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet)) {
+            pBoard->show(pBoard);
+            printError("\nMove is not in one dimension!");
+        }
 
-        else if (!isRoadClear(pBoard, pTileActive, pTileSet))
-            printf("Road is not clear!\n");
+        else if (!isRoadClear(pBoard, pTileActive, pTileSet)) {
+            pBoard->show(pBoard);
+            printError("\nRoad is not clear!");
+        }
 
         else
             break;
+
+        pBoard->show(pBoard);
     }
 
     pPlayer->collectedFish += pTileSet->nrFish;
@@ -75,6 +90,7 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     }
 
     pTileActive->isOccupied = 0;
+    pTileActive->isActive = 0;
     pTileActive->isRemoved = 1;
 
     pTileSet->isOccupied = pPlayer->id;
@@ -92,7 +108,7 @@ struct Tile *askForCoordinates(struct Board *pBoard) {
     do {
         printf("- Enter Y coordinate: ");
         scanf("%d", &y);
-    } while (x < 0 || x > pBoard->nrRows);
+    } while (y < 0 || y > pBoard->nrRows);
 
     return &(pBoard->pSelf[y][x]);
 }

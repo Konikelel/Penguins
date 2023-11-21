@@ -14,8 +14,6 @@ void movementPhase(struct GameData *pGameData) {
 
             if (!canPlayerMoveAnyPenguin(pGameData, playerId))
                 break;
-
-            continue;
         }
 
         pPlayer = &pGameData->pPlayers[playerId];

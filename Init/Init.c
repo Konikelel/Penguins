@@ -23,6 +23,7 @@ struct GameData *initPhase() {
 
     askSetDimensions(pBoard);
     generateRandomBoard(pBoard);
+
     pBoard->show(pBoard);
 
     for (int nr = 0; nr < 2; nr++) {
