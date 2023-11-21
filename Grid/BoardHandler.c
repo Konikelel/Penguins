@@ -19,11 +19,11 @@ int genRandomValue() {
 void showBoard(struct Board *pBoard) {
     printf("\n\n\n   ");
     for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
-        printf(nrX < 10 ? "%s0%d%s " : "%s%d%s ", CYN, nrX, RESET);
+        printf(nrX < 10 ? " %s%d%s " : "%s%d%s ", CYN, nrX, RESET);
     }
 
     for (int nrY = 0; nrY < pBoard->nrRows; nrY++) {
-        printf(nrY < 10 ? "\n%s0%d%s" : "\n%s%d%s", CYN, nrY, RESET);
+        printf(nrY < 10 ? "\n %s%d%s" : "\n%s%d%s", CYN, nrY, RESET);
 
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
             switch (pBoard->pSelf[nrY][nrX].isOccupied) {

@@ -3,15 +3,15 @@
 #include "Board.h"
 #include "Tile.h"
 
-int isSpawnValid(struct Tile *pTile) {
+bool isSpawnValid(struct Tile *pTile) {
     return (pTile->nrFish == 1 && !pTile->isOccupied && !pTile->isRemoved);
 }
 
-int isTileFree(struct Tile *pTile) {
+bool isTileFree(struct Tile *pTile) {
     return !(pTile->isOccupied || pTile->isRemoved);
 }
 
-int isSetTileBlocked(struct Board *pBoard, struct Tile *pTile) {
+bool isSetTileBlocked(struct Board *pBoard, struct Tile *pTile) {
     int x = pTile->x;
     int y = pTile->y;
 
@@ -21,7 +21,7 @@ int isSetTileBlocked(struct Board *pBoard, struct Tile *pTile) {
         if (nrX < 0 || nrX > pBoard->nrColumns - 1)
             continue;
 
-        for (int nrY = x - 1; nrY <= x + 1; nrY++) {
+        for (int nrY = y - 1; nrY <= y + 1; nrY++) {
             if (nrY < 0 || nrY > pBoard->nrRows - 1)
                 continue;
 
@@ -33,16 +33,16 @@ int isSetTileBlocked(struct Board *pBoard, struct Tile *pTile) {
             if (!pTileTemp->isOccupied && !pTileTemp->isRemoved) {
                 pTile->isBlocked = 0;
 
-                return 0;
+                return false;
             }
         }
     }
     pTile->isBlocked = 1;
 
-    return 1;
+    return true;
 }
 
-int isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet) {
+bool isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet) {
     int xActive = pTileActive->x, yActive = pTileActive->y;
     int xSet = pTileSet->x, ySet = pTileSet->y;
 
@@ -55,7 +55,7 @@ int isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTi
                 continue;
 
             if (!isTileFree(&pBoard->pSelf[yActive][nr]))
-                return 0;
+                return false;
         }
 
     } else if (yActive != ySet) {
@@ -67,13 +67,13 @@ int isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTi
                 continue;
 
             if (!isTileFree(&pBoard->pSelf[nr][xActive]))
-                return 0;
+                return false;
         }
     }
-    return 1;
+    return true;
 }
 
-int isMoveInOneDimension(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet) {
+bool isMoveInOneDimension(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet) {
     int xActive = pTileActive->x, yActive = pTileActive->y;
     int xSet = pTileSet->x, ySet = pTileSet->y;
 

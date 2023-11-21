@@ -19,8 +19,8 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
 
         if (isSpawnValid(tileChoosen))
             break;
-        else
-            printf("Invalid coordinates!\n");
+
+        printf("Invalid coordinates!\n");
     }
 
     tileChoosen->isOccupied = pPlayer->id;
@@ -40,13 +40,13 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
 
         pTileActive = askForCoordinates(pBoard);
 
-        if (!isPlayerPenguin(pPlayer, pTileActive)) {
+        if (!isPlayerPenguin(pPlayer, pTileActive))
             printf("Invalid coordinates!\n");
 
-        } else if (!isSetTileBlocked(pBoard, pTileActive)) {
+        else if (isSetTileBlocked(pBoard, pTileActive))
             printf("Tile is blocked!\n");
 
-        } else
+        else
             break;
     }
 
@@ -55,13 +55,13 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
 
         pTileSet = askForCoordinates(pBoard);
 
-        if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet)) {
+        if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet))
             printf("Move is not in one dimension!\n");
 
-        } else if (!isRoadClear(pBoard, pTileActive, pTileSet)) {
+        else if (!isRoadClear(pBoard, pTileActive, pTileSet))
             printf("Road is not clear!\n");
 
-        } else
+        else
             break;
     }
 
@@ -97,14 +97,14 @@ struct Tile *askForCoordinates(struct Board *pBoard) {
     return &(pBoard->pSelf[y][x]);
 }
 
-int isPlayerPenguin(struct Player *pPlayer, struct Tile *pTile) {
+bool isPlayerPenguin(struct Player *pPlayer, struct Tile *pTile) {
     for (int nr = 0; nr < pPlayer->usedPenguins; nr++)
         if (pPlayer->pPenguins[nr] == pTile)
-            return 1;
-    return 0;
+            return true;
+    return false;
 }
 
-int canPlayerMoveAnyPenguin(struct GameData *pGameData, int playerId) {
+bool canPlayerMoveAnyPenguin(struct GameData *pGameData, int playerId) {
     struct Tile **pTiles = pGameData->pPlayers[playerId].pPenguins;
     int nrStuckPenguins = 0;
 

@@ -1,14 +1,16 @@
 #pragma once
 
+#include <stdbool.h>
+
 #include "Board.h"
 #include "Tile.h"
 
-int isSpawnValid(struct Tile *pTile);
+bool isSpawnValid(struct Tile *pTile);
 
-int isTileFree(struct Tile *pTile);
+bool isTileFree(struct Tile *pTile);
 
-int isSetTileBlocked(struct Board *pBoard, struct Tile *pTile);
+bool isSetTileBlocked(struct Board *pBoard, struct Tile *pTile);
 
-int isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet);
+bool isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet);
 
-int isMoveInOneDimension(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet);
+bool isMoveInOneDimension(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet);
