@@ -76,8 +76,6 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
 
         else
             break;
-
-        pBoard->show(pBoard);
     }
 
     pPlayer->collectedFish += pTileSet->nrFish;

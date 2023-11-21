@@ -21,8 +21,9 @@ struct GameData *initPhase() {
 
     *pBoard = (struct Board){.show = &showBoard};
 
+    int nrPenguinsPerPlayer = 2;
     askSetDimensions(pBoard);
-    generateRandomBoard(pBoard);
+    generateRandomBoard(pBoard, nrPenguinsPerPlayer);
 
     pBoard->show(pBoard);
 
@@ -38,7 +39,7 @@ struct GameData *initPhase() {
 
     pGameData->pBoard = pBoard;
     pGameData->pPlayers = pPlayers;
-    pGameData->nrPenguinsPerPlayer = 2;
+    pGameData->nrPenguinsPerPlayer = nrPenguinsPerPlayer;
 
     return pGameData;
 }

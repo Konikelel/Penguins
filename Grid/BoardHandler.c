@@ -79,9 +79,9 @@ void askSetDimensions(struct Board *pBoard) {
     pBoard->nrRows = height;
 }
 
-void generateRandomBoard(struct Board *pBoard) {
+void generateRandomBoard(struct Board *pBoard, int nrPenguinsPerPlayer) {
     char randValueString[3];
-    int randValueInt;
+    int randValueInt, nrOneFishTile;
 
     struct Tile **tiles = malloc(pBoard->nrRows * sizeof(struct Tile *));
 
@@ -91,6 +91,9 @@ void generateRandomBoard(struct Board *pBoard) {
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
             randValueInt = genRandomValue();
             sprintf(randValueString, "%d", randValueInt);
+
+            if (randValueInt == 1)
+                nrOneFishTile++;
 
             tiles[nrY][nrX] = (struct Tile){
                 .x = nrX,
@@ -105,5 +108,11 @@ void generateRandomBoard(struct Board *pBoard) {
         }
     }
 
-    pBoard->pSelf = tiles;
+    if (nrOneFishTile >= (nrPenguinsPerPlayer * 2)) {
+        pBoard->pSelf = tiles;
+        return;
+    }
+
+    free(pBoard->pSelf);
+    generateRandomBoard(pBoard, nrPenguinsPerPlayer);
 }
