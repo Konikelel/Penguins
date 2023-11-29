@@ -15,18 +15,21 @@
 #include "../Grid/BoardHandler.h"
 
 struct GameData *initPhase() {
+    // Allocate memory for structures
     struct GameData *pGameData = (struct GameData *)malloc(sizeof(struct GameData));
     struct Board *pBoard = (struct Board *)malloc(sizeof(struct Board));
     struct Player *pPlayers = (struct Player *)malloc(2 * sizeof(struct Player));
 
+    // Set function pointer
     *pBoard = (struct Board){.show = &showBoard};
 
+    // Initialize the board
     int nrPenguinsPerPlayer = 2;
     askSetDimensions(pBoard);
     generateRandomBoard(pBoard, nrPenguinsPerPlayer);
 
     pBoard->show(pBoard);
-
+    // Create two structures of player
     for (int nr = 0; nr < 2; nr++) {
         pPlayers[nr] = (struct Player){
             .id = nr + 1,
