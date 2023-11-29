@@ -17,7 +17,7 @@ int main() {
     scoreboard(pGameData);
 
     struct Board *pBoard = pGameData->pBoard;
-
+    // Free memory allocated for structures and arrays
     for (int nrY = 0; nrY < pBoard->nrRows; nrY++) {
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
             free(pBoard->pSelf[nrY][nrX].label);
