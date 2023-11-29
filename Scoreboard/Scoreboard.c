@@ -5,6 +5,7 @@
 void scoreboard(struct GameData *pGameData) {
     pGameData->pBoard->show(pGameData->pBoard);
 
-    printf("\nP1 collected: %d fishes", pGameData->pPlayers[0].collectedFish);
-    printf("\nP2 collected: %d fishes", pGameData->pPlayers[1].collectedFish);
+    for (int nr = 0; nr < 2; nr++) {
+        printf("\nP%d collected: %d fishes", nr + 1, pGameData->pPlayers[nr].collectedFish);
+    }
 }
