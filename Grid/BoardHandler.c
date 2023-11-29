@@ -24,34 +24,34 @@ void printError(char *warning) {
 }
 
 void showBoard(struct Board *pBoard) {
+    // Clear terminal
     system("@cls||clear");
     printf("   ");
-
+    // Print X-axis
     for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
         printf(nrX < 10 ? " %s%d%s " : "%s%d%s ", CYN, nrX, RESET);
     }
 
     for (int nrY = 0; nrY < pBoard->nrRows; nrY++) {
+        // Print Y-coordinates
         printf(nrY < 10 ? "\n %s%d%s" : "\n%s%d%s", CYN, nrY, RESET);
 
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
+            // Print Player label on the board
             switch (pBoard->pSelf[nrY][nrX].isOccupied) {
                 case 1:
                     printf(" %sP1%s", pBoard->pSelf[nrY][nrX].isActive ? ON_GRN : GRN, RESET);
-                    break;
+                    continue;
                 case 2:
                     printf(" %sP2%s", pBoard->pSelf[nrY][nrX].isActive ? ON_RED : RED, RESET);
-                    break;
+                    continue;
             }
-
+            // Print removed tile
             if (pBoard->pSelf[nrY][nrX].isRemoved) {
                 printf("   ");
                 continue;
             }
-
-            if (pBoard->pSelf[nrY][nrX].isOccupied)
-                continue;
-
+            // Print number of fishes on non occupied tile
             char *string = pBoard->pSelf[nrY][nrX].label;
             int nrChar = strlen(string);
 
@@ -63,14 +63,14 @@ void showBoard(struct Board *pBoard) {
 
 void askSetDimensions(struct Board *pBoard) {
     int width, height;
-
+    // Ask for number of columns
     do {
         printf("Enter width: ");
         scanf("%d", &width);
     } while (width <= 0);
 
     pBoard->nrColumns = width;
-
+    // Ask for number of rows
     do {
         printf("Enter height: ");
         scanf("%d", &height);
@@ -82,19 +82,21 @@ void askSetDimensions(struct Board *pBoard) {
 void generateRandomBoard(struct Board *pBoard, int nrPenguinsPerPlayer) {
     char randValueString[3];
     int randValueInt, nrOneFishTile;
-
+    // Allocate memory for array of tile, nrRows elements
     struct Tile **tiles = malloc(pBoard->nrRows * sizeof(struct Tile *));
 
     for (int nrY = 0; nrY < pBoard->nrRows; nrY++) {
+        // Allocate memory for array of tile, nrColumns elements
         tiles[nrY] = malloc(pBoard->nrColumns * sizeof(struct Tile));
 
         for (int nrX = 0; nrX < pBoard->nrColumns; nrX++) {
+            // Get random value for fish and change it to string
             randValueInt = genRandomValue();
             sprintf(randValueString, "%d", randValueInt);
 
             if (randValueInt == 1)
                 nrOneFishTile++;
-
+            // Create structure in tiles 2 array on X,Y coordinates
             tiles[nrY][nrX] = (struct Tile){
                 .x = nrX,
                 .y = nrY,
@@ -107,12 +109,12 @@ void generateRandomBoard(struct Board *pBoard, int nrPenguinsPerPlayer) {
             };
         }
     }
-
+    // If number of tiles of one fish is enough for players, return
     if (nrOneFishTile >= (nrPenguinsPerPlayer * 2)) {
         pBoard->pSelf = tiles;
         return;
     }
-
+    // Generate board again
     free(pBoard->pSelf);
     generateRandomBoard(pBoard, nrPenguinsPerPlayer);
 }
