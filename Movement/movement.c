@@ -9,10 +9,9 @@ void movementPhase(struct GameData *pGameData) {
     int playerId = 0;
 
     while (1) {
-        // Check if current player can move
         if (!canPlayerMoveAnyPenguin(pGameData, playerId)) {
             playerId = !playerId;
-            // Check if other player can move
+
             if (!canPlayerMoveAnyPenguin(pGameData, playerId))
                 break;
         }

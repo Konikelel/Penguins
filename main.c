@@ -10,19 +10,19 @@
 int main() {
     struct GameData *pGameData = initPhase();
 
-    // placementPhase(pGameData);
-
-    // movementPhase(pGameData);
-
+    placementPhase(pGameData);
+    movementPhase(pGameData);
     scoreboard(pGameData);
 
     struct Board *pBoard = pGameData->pBoard;
-    // Free memory allocated for structures and arrays
-    for (int nrY = 0; nrY < pBoard->nrRows; nrY++) {
-        free(pBoard->pSelf[nrY]);
-    }
-    free(pBoard->pSelf);
 
+    for (int nrY = 0; nrY < pBoard->nrRows; nrY++)
+        free(pBoard->pSelf[nrY]);
+
+    for (int nr = 0; nr < 2; nr++)
+        free(pGameData->pPlayers[nr].pPenguins);
+
+    free(pBoard->pSelf);
     free(pBoard);
     free(pGameData->pPlayers);
     free(pGameData);
