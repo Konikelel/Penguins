@@ -74,7 +74,7 @@ void askInitData(struct Board *pBoard, int *nrPenguinsPerPlayer) {
     pBoard->nrRows = height;
 
     do {
-        printf("Enter number of penguins per player: ");
+        printf("Number of penguins: ");
         scanf("%d", &number);
     } while (number <= 0);
 

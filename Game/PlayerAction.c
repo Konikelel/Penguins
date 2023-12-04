@@ -119,10 +119,9 @@ bool canPlayerMoveAnyPenguin(struct GameData *pGameData, int playerId) {
     struct Tile **pTiles = pGameData->pPlayers[playerId].pPenguins;
     int nrStuckPenguins = 0;
 
-    for (int nr = 0; nr < pGameData->nrPenguinsPerPlayer; nr++) {
+    for (int nr = 0; nr < pGameData->nrPenguinsPerPlayer; nr++)
         if (isSetTileBlocked(pGameData->pBoard, pTiles[nr]))
             nrStuckPenguins++;
-    }
 
     return !(nrStuckPenguins == pGameData->nrPenguinsPerPlayer);
 }
