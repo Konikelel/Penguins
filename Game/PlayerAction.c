@@ -65,6 +65,9 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
         if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet))
             printError("\nMove is not in one dimension!");
 
+        else if (!isTileFree(pTileSet))
+            printError("\nCannot move there!");
+
         else if (!isRoadClear(pBoard, pTileActive, pTileSet))
             printError("\nRoad is not clear!");
 

@@ -46,34 +46,23 @@ bool isSetTileBlocked(struct Board *pBoard, struct Tile *pTile) {
 }
 
 bool isRoadClear(struct Board *pBoard, struct Tile *pTileActive, struct Tile *pTileSet) {
-    int xActive = pTileActive->x, yActive = pTileActive->y;
-    int xSet = pTileSet->x, ySet = pTileSet->y;
+    int coordActive, coordSet, coordStart, coordEnd;
+    char coord;
 
-    if (xActive != xSet) {
-        int xStart = xActive < xSet ? xActive : xSet;
-        int xTarget = xActive < xSet ? xSet : xActive;
+    if (pTileActive->x == pTileSet->x)
+        coord = 'Y', coordActive = pTileActive->y, coordSet = pTileSet->y;
+    else
+        coord = 'X', coordActive = pTileActive->x, coordSet = pTileSet->x;
 
-        for (int nr = xStart; nr <= xTarget; nr++) {
-            if (xActive == nr)
-                continue;
+    if (coordActive < coordSet)
+        coordStart = coordActive, coordSet = coordSet;
+    else
+        coordStart = coordSet, coordSet = coordActive;
 
-            if (!isTileFree(&pBoard->pSelf[yActive][nr]))
-                return false;
-        }
-    }
+    for (int nr = coordStart + 1; nr < coordSet; nr++)
+        if (!isTileFree(coord == 'X' ? &pBoard->pSelf[pTileActive->y][nr] : &pBoard->pSelf[nr][pTileActive->x]))
+            return false;
 
-    else if (yActive != ySet) {
-        int yStart = yActive < ySet ? yActive : ySet;
-        int yTarget = yActive < ySet ? ySet : yActive;
-
-        for (int nr = yStart; nr <= yTarget; nr++) {
-            if (yActive == nr)
-                continue;
-
-            if (!isTileFree(&pBoard->pSelf[nr][xActive]))
-                return false;
-        }
-    }
     return true;
 }
 
