@@ -15,7 +15,7 @@
 #include "BoardChecks.h"
 
 int genRandomValue() {
-    return rand() % 4;
+    return rand() % 3 + 1;
 }
 
 void printError(char *warning) {
@@ -57,33 +57,33 @@ void showBoard(struct Board *pBoard) {
 }
 
 void askInitData(struct Board *pBoard, int *nrPenguinsPerPlayer) {
-    int width, height, number;
+    int width, height, numberPenguins;
 
     do {
+        fflush(stdin);
         printf("Enter width: ");
-        scanf("%d", &width);
-    } while (width <= 0);
+    } while (scanf("%d", &width) != 1 || 1 >= width);
 
     pBoard->nrColumns = width;
 
     do {
+        fflush(stdin);
         printf("Enter height: ");
-        scanf("%d", &height);
-    } while (height <= 0);
+    } while (scanf("%d", &height) != 1 || 1 >= height);
 
     pBoard->nrRows = height;
 
     do {
+        fflush(stdin);
         printf("Number of penguins: ");
-        scanf("%d", &number);
-    } while (number <= 0);
+    } while (scanf("%d", &numberPenguins) != 1 || 0 >= numberPenguins || numberPenguins > (width * height) / 2);
 
-    *nrPenguinsPerPlayer = number;
+    *nrPenguinsPerPlayer = numberPenguins;
 }
 
 void generateRandomBoard(struct Board *pBoard, int *nrPenguinsPerPlayer) {
     char randValueString[3];
-    int randValueInt, nrOneFishTile;
+    int randValueInt, nrOneFishTile = 0;
 
     struct Tile **tiles = malloc(pBoard->nrRows * sizeof(struct Tile *));
 
