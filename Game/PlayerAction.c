@@ -1,5 +1,6 @@
 #include "PlayerAction.h"
 
+#include <ctype.h>
 #include <stdio.h>
 
 #include "../Grid/Board.h"
@@ -93,6 +94,8 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
 
 struct Tile *askForCoordinates(struct Board *pBoard) {
     int x, y;
+    char buffer[100];
+    int inputCount;
 
     do {
         fflush(stdin);
