@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "Board.h"
 #include "BoardChecks.h"
@@ -56,30 +57,92 @@ void showBoard(struct Board *pBoard) {
     printf("\n");
 }
 
+
+
 void askInitData(struct Board *pBoard, int *nrPenguinsPerPlayer) {
     int width, height, number;
+    char buffer[100];  
+    char *endptr;  
+    long int result;  
 
     do {
         printf("Enter width: ");
-        scanf("%d", &width);
-    } while (width <= 0);
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+           
+        }
+
+        result = strtol(buffer, &endptr, 10);
+        if (*endptr != '\0' && *endptr != '\n') {
+            printf("Invalid input. Please enter a valid positive integer for width.\n");
+            continue;
+        }
+
+        width = (int)result;
+
+        if (width <= 0) {
+            printf("Invalid input. Please enter a valid positive integer for width.\n");
+            continue;
+        }
+
+        break;  
+
+    } while (1);
 
     pBoard->nrColumns = width;
 
     do {
         printf("Enter height: ");
-        scanf("%d", &height);
-    } while (height <= 0);
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+           
+        }
+
+        result = strtol(buffer, &endptr, 10);
+        if (*endptr != '\0' && *endptr != '\n') {
+            printf("Invalid input. Please enter a valid positive integer for height.\n");
+            continue;
+        }
+
+        height = (int)result;
+
+        if (height <= 0) {
+            printf("Invalid input. Please enter a valid positive integer for height.\n");
+            continue;
+        }
+
+        break;  
+
+    } while (1);
 
     pBoard->nrRows = height;
 
     do {
         printf("Number of penguins: ");
-        scanf("%d", &number);
-    } while (number <= 0);
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+           
+        }
+
+       
+        result = strtol(buffer, &endptr, 10);
+        if (*endptr != '\0' && *endptr != '\n') {
+            printf("Invalid input. Please enter a valid positive integer for the number of penguins.\n");
+            continue;
+        }
+
+        number = (int)result;
+
+        if (number <= 0) {
+            printf("Invalid input. Please enter a valid positive integer for the number of penguins.\n");
+            continue;
+        }
+
+        break;  
+
+    } while (1);
 
     *nrPenguinsPerPlayer = number;
 }
+
+
 
 void generateRandomBoard(struct Board *pBoard, int *nrPenguinsPerPlayer) {
     char randValueString[3];
