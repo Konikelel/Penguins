@@ -5,6 +5,6 @@
 Function that displays scoreboard after game finishes
 
 arguments:
-pGameData - pointer to struct GameData
+* pGameData - pointer to struct GameData
 */
 void scoreboard(struct GameData *pGameData);
