@@ -75,8 +75,6 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
             break;
     }
 
-    pPlayer->collectedFish += pTileSet->nrFish;
-
     for (int nr = 0; nr < 4; nr++) {
         if (pPlayer->pPenguins[nr] != pTileActive)
             continue;
@@ -97,15 +95,14 @@ struct Tile *askForCoordinates(struct Board *pBoard) {
     int x, y;
 
     do {
+        fflush(stdin);
         printf("- Enter X coordinate: ");
-        scanf("%d", &x);
-
-    } while (x < 0 || x > pBoard->nrColumns);
+    } while (scanf("%d", &x) != 1 || x < 0 || x >= pBoard->nrColumns);
 
     do {
+        fflush(stdin);
         printf("- Enter Y coordinate: ");
-        scanf("%d", &y);
-    } while (y < 0 || y > pBoard->nrRows);
+    } while (scanf("%d", &y) != 1 || y < 0 || y >= pBoard->nrRows);
 
     return &(pBoard->pSelf[y][x]);
 }
