@@ -1,6 +1,7 @@
 #include "PlayerAction.h"
 
 #include <stdio.h>
+#include <ctype.h>
 
 #include "../Grid/Board.h"
 #include "../Grid/BoardChecks.h"
@@ -93,22 +94,63 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     pPlayer->collectedFish += pTileSet->nrFish;
 }
 
+
+
 struct Tile *askForCoordinates(struct Board *pBoard) {
     int x, y;
+    char buffer[100];  
+    int inputCount;
 
     do {
         printf("- Enter X coordinate: ");
-        scanf("%d", &x);
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            
+        }
 
-    } while (x < 0 || x > pBoard->nrColumns);
+        inputCount = sscanf(buffer, "%d", &x);
+
+        if (inputCount != 1 || buffer[0] == '.' || buffer[0] == '\n' || buffer[0] == '\0' || x < 0 || x >= pBoard->nrColumns) {
+            printf("Invalid input. Please enter a valid integer within the X-coordinate board range.\n");
+            continue;
+        }
+
+        for (int i = 1; buffer[i] != '\0' && buffer[i] != '\n'; i++) {
+            if (!isdigit(buffer[i])) {
+                printf("Invalid input. Please enter a valid integer within the X-coordinate board range.\n");
+                x = -1; 
+                break;
+            }
+        }
+
+    } while (x < 0 || x >= pBoard->nrColumns);
 
     do {
         printf("- Enter Y coordinate: ");
-        scanf("%d", &y);
-    } while (y < 0 || y > pBoard->nrRows);
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            
+        }
+
+        inputCount = sscanf(buffer, "%d", &y);
+
+        if (inputCount != 1 || buffer[0] == '.' || buffer[0] == '\n' || buffer[0] == '\0' || y < 0 || y >= pBoard->nrRows) {
+            printf("Invalid input. Please enter a valid integer within the Y-coordinate board range.\n");
+            continue;
+        }
+
+        for (int i = 1; buffer[i] != '\0' && buffer[i] != '\n'; i++) {
+            if (!isdigit(buffer[i])) {
+                printf("Invalid input. Please enter a valid integer within the Y-coordinate board range.\n");
+                y = -1; 
+                break;
+            }
+        }
+
+    } while (y < 0 || y >= pBoard->nrRows);
 
     return &(pBoard->pSelf[y][x]);
 }
+
+
 
 bool isPlayerPenguin(struct Player *pPlayer, struct Tile *pTile) {
     for (int nr = 0; nr < pPlayer->usedPenguins; nr++)
