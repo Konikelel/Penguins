@@ -15,7 +15,7 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     int *nrPlayerPenguins = &(pPlayer->usedPenguins);
     char message[50];
 
-    sprintf(message, "\nP%d Choose where to move penguin:\n", pPlayer->id);
+    sprintf(message, "\nP%d Choose where to spawn penguin:\n", pPlayer->id);
     while (1) {
         tileChoosen = askForCoordinates(pBoard, message);
 
