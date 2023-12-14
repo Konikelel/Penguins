@@ -12,11 +12,12 @@ Function that ask for coordinates on the board
 
 arguments:
 * pBoard - pointer to struct Board
+*message - to display while entering coordinates
 
 return:
 * pointer to struct Tile
 */
-struct Tile *askForCoordinates(struct Board *pBoard);
+struct Tile *askForCoordinates(struct Board *pBoard, char *message);
 
 /*
 Function that asks for coordinates, validates move, move penguin and collect fishes

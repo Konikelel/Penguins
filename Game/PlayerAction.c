@@ -13,11 +13,11 @@
 void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *tileChoosen;
     int *nrPlayerPenguins = &(pPlayer->usedPenguins);
+    char message[50];
 
+    sprintf(message, "\nP%d Choose where to move penguin:\n", pPlayer->id);
     while (1) {
-        printf("\nP%d Choose penguin spawn:\n", pPlayer->id);
-
-        tileChoosen = askForCoordinates(pBoard);
+        tileChoosen = askForCoordinates(pBoard, message);
 
         if (isSpawnValid(tileChoosen))
             break;
@@ -37,11 +37,11 @@ void spawnPenguin(struct Player *pPlayer, struct Board *pBoard) {
 void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     struct Tile *pTileActive;
     struct Tile *pTileSet;
+    char message[50];
 
+    sprintf(message, "\nP%d Choose penguin:\n", pPlayer->id);
     while (1) {
-        printf("\nP%d Choose penguin:\n", pPlayer->id);
-
-        pTileActive = askForCoordinates(pBoard);
+        pTileActive = askForCoordinates(pBoard, message);
         pBoard->show(pBoard);
 
         if (!isPlayerPenguin(pPlayer, pTileActive))
@@ -57,10 +57,9 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     pTileActive->isActive = 1;
     pBoard->show(pBoard);
 
+    sprintf(message, "\nP%d Choose where to move penguin:\n", pPlayer->id);
     while (1) {
-        printf("\nP%d Choose where to move penguin:\n", pPlayer->id);
-
-        pTileSet = askForCoordinates(pBoard);
+        pTileSet = askForCoordinates(pBoard, message);
         pBoard->show(pBoard);
 
         if (!isMoveInOneDimension(pBoard, pTileActive, pTileSet))
@@ -92,20 +91,53 @@ void movePenguin(struct Player *pPlayer, struct Board *pBoard) {
     pPlayer->collectedFish += pTileSet->nrFish;
 }
 
-struct Tile *askForCoordinates(struct Board *pBoard) {
+struct Tile *askForCoordinates(struct Board *pBoard, char *message) {
     int x, y;
     char buffer[100];
     int inputCount;
 
-    do {
+    while (1) {
         fflush(stdin);
+        printf(message);
         printf("- Enter X coordinate: ");
-    } while (scanf("%d", &x) != 1 || x < 0 || x >= pBoard->nrColumns);
+        int result = scanf("%d", &x);
 
-    do {
+        pBoard->show(pBoard);
+
+        if (result != 1)
+            printError("\nX must be number");
+
+        else if (x < 0)
+            printError("\nX must be not negative");
+
+        else if (x >= pBoard->nrColumns)
+            printError("\nX must be lower than number of columns");
+
+        else
+            break;
+    }
+
+    while (1) {
         fflush(stdin);
+        printf(message);
+        printf("- Enter X coordinate: %d\n", x);
         printf("- Enter Y coordinate: ");
-    } while (scanf("%d", &y) != 1 || y < 0 || y >= pBoard->nrRows);
+        int result = scanf("%d", &y);
+
+        pBoard->show(pBoard);
+
+        if (result != 1)
+            printError("\nY must be number");
+
+        else if (y < 0)
+            printError("\nY must be not negative");
+
+        else if (y >= pBoard->nrRows)
+            printError("\nY must be lower than number of columns");
+
+        else
+            break;
+    }
 
     return &(pBoard->pSelf[y][x]);
 }

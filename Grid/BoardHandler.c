@@ -59,24 +59,57 @@ void showBoard(struct Board *pBoard) {
 void askInitData(struct Board *pBoard, int *nrPenguinsPerPlayer) {
     int width, height, numberPenguins;
 
-    do {
+    while (1) {
         fflush(stdin);
         printf("Enter width: ");
-    } while (scanf("%d", &width) != 1 || 1 >= width);
+        int result = scanf("%d", &width);
+
+        if (result != 1)
+            printError("Width must be number\n");
+
+        else if (width <= 1)
+            printError("Width must be greater than 1\n");
+
+        else
+            break;
+    }
 
     pBoard->nrColumns = width;
 
-    do {
+    while (1) {
         fflush(stdin);
         printf("Enter height: ");
-    } while (scanf("%d", &height) != 1 || 1 >= height);
+        int result = scanf("%d", &height);
+
+        if (result != 1)
+            printError("Height must be number\n");
+
+        else if (height <= 1)
+            printError("Height must be greater than 1\n");
+
+        else
+            break;
+    }
 
     pBoard->nrRows = height;
 
-    do {
+    while (1) {
         fflush(stdin);
         printf("Number of penguins: ");
-    } while (scanf("%d", &numberPenguins) != 1 || 0 >= numberPenguins || numberPenguins > (width * height) / 2);
+        int result = scanf("%d", &numberPenguins);
+
+        if (result != 1)
+            printError("Number of penguins must be number\n");
+
+        else if (numberPenguins <= 0)
+            printError("Number of penguins must be greater than 0\n");
+
+        else if (numberPenguins > (width * height) / 2)
+            printError("Number of penguins must be lower or equal to than number of tiles\n");
+
+        else
+            break;
+    }
 
     *nrPenguinsPerPlayer = numberPenguins;
 }
