@@ -1,0 +1,1 @@
+gcc -o penguins .\Main.c .\Init\Init.c .\Placement\Placement.c .\Movement\Movement.c .\Scoreboard\Scoreboard.c .\Game\PlayerAction.c .\Grid\BoardHandler.c .\Grid\BoardChecks.c
